@@ -1,5 +1,8 @@
 from ContactBook import ContactBook
-import datetime # used for saving information on when a new contact was created.
+from Contact import Contact
+
+conn_psycopg = None
+
 
 def menu():
     print("\nWhat would you like to do?")
@@ -23,10 +26,21 @@ def main():
             fn = input("First_name: ")
             ln = input("Last_name: ")
             phone = input("Phone: ")
+
+            while True: # validate phone number
+                if book.valid_phone(phone):
+                    break
+                phone = input("Input Valid Number: ")
+
             email = input("Email: ")
-            current_time = datetime.datetime.now()
+            while True:
+                if book.valid_email(email):
+                    break
+                email = input("Input valid email address: ")
+
             book.add(fn, ln, phone, email, current_time)
             print("Your contact was added successfully!")
+
         elif choice == "2": # deleting a contact
             contacts = book.get_contacts()
             for i in range(len(contacts)):
@@ -34,6 +48,15 @@ def main():
                 print(str(i) + ": " + info[0] + info[1] + info[2] + info[3])
             print(str(len(contacts)) + ": None")
             choice = input("Selection: ")
+            while True:
+                if choice > len(contacts):
+                    choice = input("Please enter valid selection: ")
+                else:
+                    if choice == len(contacts):
+                        continue
+                    else:
+                        book.delete(choice)
+                    break
 
         elif choice == "3": # updating a contact
             pass
@@ -47,14 +70,13 @@ def main():
                 print("Phone: " + info[2])
                 print("Email: " + info[3])
                 print("Date: " + str(info[4]))
+
         elif choice == "5": # backup to database
             pass
         elif choice == "6": # exit
             exit()
         else: # invalid
             print("Invalid Input")
-
-
 
 if __name__ == '__main__':
     main()
