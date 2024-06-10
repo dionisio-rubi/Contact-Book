@@ -2,7 +2,7 @@ import re
 import datetime # used for saving information on when a new contact was created.
 
 class Contact:
-    def __init__(self, first_name, last_name=None, phone=None, email=None):
+    def __init__(self, id = None, first_name=None, last_name=None, phone=None, email=None, date_added=None):
         if phone is None and email is None:
             raise ValueError("Phone or email must be added")
 
@@ -10,7 +10,15 @@ class Contact:
         self.last_name = last_name
         self.phone = phone
         self.email = email
-        self.date_added = datetime.datetime.now()
+        self.date_added = date_added if date_added is not None else datetime.datetime.now()
+
+    def get_id(self):
+        """ get id """
+        return self.id
+
+    def set_id(self, id):
+        """ set contact id"""
+        self.id = id
 
     def set_fname(self, name):
         """ sets first name """

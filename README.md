@@ -23,18 +23,18 @@ The Contact Book project not only serves as a practical tool for contact managem
 ```
     Currently implementing the contact book class:
         Add contact: DONE
-        Delete Contact: IN PROGRESS
-        Update Contact: IN PROGRESS
-        Show Contacts: DONE
+        Delete Contact: DONE
+        Update Contact: DONE
+        Show Contacts: IN PROGRESS
 ```
 
 ### Current Issues
 ```
-    none
+    TESTING
 ```
 
 ### Next Plan of Action
 ```
-    Setting up Database
+    UPDATE INTERFACE, TEST DATABASE
 ```
 
