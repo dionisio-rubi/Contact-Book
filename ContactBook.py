@@ -1,6 +1,6 @@
 from Contact import Contact
 import psycopg as pg
-import requests
+import os
 
 class ContactBook:
     def __init__(self):
@@ -46,9 +46,16 @@ class ContactBook:
             return False
         return True
 
-    def edit(self, id):
+    def edit(self, contact: Contact):
         """ Edit contact information """
-        pass
+        try:
+            insert_script = 'UPDATE FROM contactBook SET first_name = (%s), last_name = (%s), phone = (%s), email = (%s) WHERE id = %s'
+            values = (
+            contact.get_fname(), contact.get_lname(), contact.get_phone(), contact.get_email(), contact.get_id())
+            self.cur.execute(insert_script, values)
+            self.conn.commit()
+        except pg.Error as error:
+            print(error)
 
     def delete(self, index):
         """Deletes a contact from local contact book"""
@@ -66,7 +73,7 @@ class ContactBook:
         """Retrieve contact details by ID"""
         return self._run_sql_fetchall('SELECT * FROM contactBook WHERE id = %s', id)
 
-    def get_by_name(self, name):
+    def get_by_name(self, name: str):
         """Retrieve contact details by name"""
         return self._run_sql_fetchall('SELECT * FROM contactBook WHERE LOWER(first_name) = LOWER(%s)', name)
 

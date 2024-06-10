@@ -6,6 +6,7 @@ class Contact:
         if phone is None and email is None:
             raise ValueError("Phone or email must be added")
 
+        self.id = id
         self.first_name = first_name
         self.last_name = last_name
         self.phone = phone
