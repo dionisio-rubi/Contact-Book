@@ -1,8 +1,8 @@
+import re
 from ContactBook import ContactBook
 from Contact import Contact
 
 conn_psycopg = None
-
 
 def menu():
     print("\nWhat would you like to do?")
@@ -10,10 +10,18 @@ def menu():
     print("2. Delete a Contact")
     print("3. Update a Contact")
     print("4. Get all Contacts")
-    print("5. Backup Contacts")
-    print("6. Exit")
+    print("5. Search for a Contact")
+    print("6. Clear Database")
+    print("7. Exit")
     choice = input("Enter your choice: ")
     return choice
+
+def valid_phone(phone):
+    return (len(phone) == 10 and isinstance(phone, int)) or phone == 'None'
+
+def valid_email(email):
+    pattern = r"^[A-Za-z0-9]+[.-_]*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Za-z]{2,})+$"
+    return email == 'None' or (re.match(pattern, email) is not None)
 
 def main():
     print("Welcome to your Contact Book!")
@@ -28,24 +36,26 @@ def main():
             phone = input("Phone: ")
 
             while True: # validate phone number
-                if book.valid_phone(phone):
+                if valid_phone(phone):
                     break
                 phone = input("Input Valid Number: ")
 
             email = input("Email: ")
             while True:
-                if book.valid_email(email):
+                if valid_email(email):
                     break
                 email = input("Input valid email address: ")
 
-            book.add(fn, ln, phone, email, current_time)
-            print("Your contact was added successfully!")
+            success = book.add(Contact(first_name=fn, last_name=ln, phone=phone, email=email))
+            if success:
+                print("Your contact was added successfully!")
+            else:
+                print("Invalid Contact Information")
 
         elif choice == "2": # deleting a contact
             contacts = book.get_contacts()
-            for i in range(len(contacts)):
-                info = contacts[i]
-                print(str(i) + ": " + info[0] + info[1] + info[2] + info[3])
+            for c in contacts:
+                print(c.get_id() + ": " + c.get_fname() + c.get_lname() + c.get_phone() + c.get_email())
             print(str(len(contacts)) + ": None")
             choice = input("Selection: ")
             while True:
@@ -69,11 +79,13 @@ def main():
                 print("Last Name: " + info[1])
                 print("Phone: " + info[2])
                 print("Email: " + info[3])
-                print("Date: " + str(info[4]))
+                print("Date Created: " + str(info[4]))
 
-        elif choice == "5": # backup to database
+        elif choice == "5": # Search for a Contact
             pass
-        elif choice == "6": # exit
+        elif choice == "6": # clear database
+            book.clear_database()
+        elif choice == "7": # exit
             exit()
         else: # invalid
             print("Invalid Input")

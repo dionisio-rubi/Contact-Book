@@ -1,13 +1,20 @@
 from Contact import Contact
 import psycopg as pg
 import os
+from dotenv import load_dotenv
 
 class ContactBook:
     def __init__(self):
-        self.conn = pg.connect(os.getenv("database_url"))
+        load_dotenv()
+        conn_string = os.getenv("database_url")
+        print(conn_string)
+        self.conn = pg.connect(conn_string)
         self.cur = self.conn.cursor()
 
         try:
+            # self.cur.execute('DROP TABLE IF EXISTS contactBook;')
+            # self.conn.commit()
+
             create_table = 'CREATE TABLE IF NOT EXISTS contactBook (id SERIAL PRIMARY KEY, first_name VARCHAR(255), last_name VARCHAR(255), phone INT, email VARCHAR(255), date_created VARCHAR(255));'
             self.cur.execute(create_table)
             self.conn.commit()
@@ -56,6 +63,8 @@ class ContactBook:
             self.conn.commit()
         except pg.Error as error:
             print(error)
+            return False
+        return True
 
     def delete(self, index):
         """Deletes a contact from local contact book"""
@@ -86,17 +95,24 @@ class ContactBook:
             self.cur.execute('SELECT * FROM contactBook')
             self.conn.commit()
             contacts = self.cur.fetchall()
+            print(contacts)
 
         except pg.Error as error:
             print(error)
             return None
-        return contacts
+
+        all_contacts = []
+        for c in contacts:
+            all_contacts.append(Contact(c[0], c[1], c[2], c[3], c[4], c[5]))
+        return all_contacts
 
     def _run_sql_fetchall(self, script, **kwargs):
         try:
             self.cur.execute(script, (kwargs,))
             self.conn.commit()
             contact = self.cur.fetchall()
+
+            print(contact)
 
         except pg.Error as error:
             print(f"Error executing script: { script }\n\twith params: { kwargs }")
