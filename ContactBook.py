@@ -3,6 +3,7 @@ import psycopg as pg
 import os
 from dotenv import load_dotenv
 
+
 class ContactBook:
     def __init__(self):
         load_dotenv()
@@ -58,7 +59,7 @@ class ContactBook:
         try:
             insert_script = 'UPDATE FROM contactBook SET first_name = (%s), last_name = (%s), phone = (%s), email = (%s) WHERE id = %s'
             values = (
-            contact.get_fname(), contact.get_lname(), contact.get_phone(), contact.get_email(), contact.get_id())
+                contact.get_fname(), contact.get_lname(), contact.get_phone(), contact.get_email(), contact.get_id())
             self.cur.execute(insert_script, values)
             self.conn.commit()
         except pg.Error as error:
@@ -78,7 +79,7 @@ class ContactBook:
             return False
         return True
 
-    def get_by_id(self, id:int):
+    def get_by_id(self, id: int):
         """Retrieve contact details by ID"""
         return self._run_sql_fetchall('SELECT * FROM contactBook WHERE id = %s', id)
 
@@ -95,7 +96,6 @@ class ContactBook:
             self.cur.execute('SELECT * FROM contactBook')
             self.conn.commit()
             contacts = self.cur.fetchall()
-            print(contacts)
 
         except pg.Error as error:
             print(error)
@@ -110,11 +110,13 @@ class ContactBook:
         try:
             self.cur.execute(script, (kwargs,))
             self.conn.commit()
-            contact = self.cur.fetchall()
-
-            print(contact)
+            contacts = self.cur.fetchall()
 
         except pg.Error as error:
-            print(f"Error executing script: { script }\n\twith params: { kwargs }")
+            print(f"Error executing script: {script}\n\twith params: {kwargs}")
             return None
-        return contact
+
+        all_contacts = []
+        for c in contacts:
+            all_contacts.append(Contact(c[0], c[1], c[2], c[3], c[4], c[5]))
+        return all_contacts

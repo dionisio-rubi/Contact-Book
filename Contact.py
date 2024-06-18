@@ -9,13 +9,13 @@ class Contact:
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
-        self.phone = phone
+        self.phone = phone if phone != None or isinstance(phone, int) is not True else 0000000000
         self.email = email
         self.date_added = date_added if date_added is not None else datetime.datetime.now()
 
     def get_id(self):
         """ get id """
-        return self.id
+        return str(self.id)
 
     def set_id(self, id):
         """ set contact id"""
@@ -56,7 +56,7 @@ class Contact:
 
     def get_phone(self):
         """return phone number"""
-        return self.phone
+        return str(self.phone)
 
     def get_email(self):
         """return email address"""
