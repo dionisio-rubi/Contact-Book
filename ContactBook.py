@@ -67,7 +67,7 @@ class ContactBook:
             return False
         return True
 
-    def delete(self, index):
+    def delete(self, index: int):
         """Deletes a contact from local contact book"""
         try:
             insert_script = 'DELETE FROM contactBook WHERE id = %s'
