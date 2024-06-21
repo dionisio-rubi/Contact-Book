@@ -25,16 +25,16 @@ The Contact Book project not only serves as a practical tool for contact managem
         Add contact: DONE
         Delete Contact: DONE
         Update Contact: DONE
-        Show Contacts: IN PROGRESS
+        Show Contacts: DONE
 ```
 
 ### Current Issues
 ```
-    TESTING
+    Get a contact based on either id, name, or phone
 ```
 
 ### Next Plan of Action
 ```
-    UPDATE INTERFACE, TEST DATABASE
+    Debug
 ```
 

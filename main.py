@@ -26,7 +26,7 @@ def search_Menu():
     return choice
 
 def edit_menu(c: Contact):
-    print("\n" + c.get_id() + ": " + c.get_fname() + c.get_lname() + c.get_phone() + c.get_email())
+    print("\n" + c.get_id() + ": " + c.get_fname() + " " + c.get_lname() + " " + c.get_phone() + " " + c.get_email())
     print("What would you like to update?")
     print("1. First Name only")
     print("2. Last Name only")
@@ -49,8 +49,8 @@ def print_contacts(contacts):
 def contact_selection(contacts):
     valid_id = []
     for c in contacts:
-        valid_id.append(c.get_id())
-        print(c.get_id() + ": " + c.get_fname() + c.get_lname() + c.get_phone() + c.get_email())
+        valid_id.append(str(c.get_id()))
+        print(c.get_id() + ": " + c.get_fname() + " " + c.get_lname() + " " + c.get_phone() + " " + c.get_email())
     print("-1: None")
     choice = input("Selection: ")
     while True:
@@ -60,7 +60,7 @@ def contact_selection(contacts):
             return choice
 
 def valid_phone(phone):
-    return (len(phone) == 10 and isinstance(phone, int)) or phone == 'None'
+    return (len(str(phone)) == 10 and isinstance(int(phone), int)) or phone == 'None'
 
 def valid_email(email):
     pattern = r"^[A-Za-z0-9]+[.-_]*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Za-z]{2,})+$"
@@ -105,7 +105,7 @@ def main():
             print("Which Contact would you like to update?")
             choice = contact_selection(book.get_contacts())
             if choice == "-1": break
-            contact = book.get_by_id(int(choice))[0]
+            contact = book.get_by_id(int(choice))
 
             while True:
                 choice = edit_menu(contact)
@@ -168,7 +168,7 @@ def main():
 
                 if choice == "1": # search by ID
                     new_id = input("Please Enter a valid ID: ")
-                    if isinstance(new_id, int):
+                    if isinstance(int(new_id), int):
                         contacts = book.get_by_id(int(new_id))
                         print_contacts(contacts)
                     else:

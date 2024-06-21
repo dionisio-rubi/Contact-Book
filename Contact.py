@@ -9,7 +9,7 @@ class Contact:
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
-        self.phone = phone if phone != None or isinstance(phone, int) is not True else 0000000000
+        self.phone = phone if phone is not None and phone != 'None' and isinstance(int(phone), int) is True else 0000000000
         self.email = email
         self.date_added = date_added if date_added is not None else datetime.datetime.now()
 
@@ -31,8 +31,9 @@ class Contact:
 
     def set_phone(self, phone):
         """ sets valid phone number """
-        if (len(phone) == 10 and isinstance(phone, int)) or phone == 'None':
-            self.phone = phone
+        if (len(phone) == 10 and isinstance(int(phone), int)) or phone == 'None':
+            if phone == 'None': self.phone = 0000000000
+            self.phone = int(phone)
             return True
         else:
             return False
