@@ -54,7 +54,7 @@ def contact_selection(contacts):
     print("-1: None")
     choice = input("Selection: ")
     while True:
-        if choice not in valid_id or choice != "-1":
+        if choice not in valid_id and choice != "-1":
             choice = input("Please enter valid selection: ")
         else:
             return choice
