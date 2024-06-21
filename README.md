@@ -30,11 +30,11 @@ The Contact Book project not only serves as a practical tool for contact managem
 
 ### Current Issues
 ```
-    Get a contact based on either id, name, or phone
+    None
 ```
 
 ### Next Plan of Action
 ```
-    Debug
+    More Unit testing if necessary
 ```
 

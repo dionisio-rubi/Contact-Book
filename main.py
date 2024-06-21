@@ -54,7 +54,7 @@ def contact_selection(contacts):
     print("-1: None")
     choice = input("Selection: ")
     while True:
-        if choice not in valid_id:
+        if choice not in valid_id or choice != "-1":
             choice = input("Please enter valid selection: ")
         else:
             return choice
@@ -105,13 +105,13 @@ def main():
             print("Which Contact would you like to update?")
             choice = contact_selection(book.get_contacts())
             if choice == "-1": break
-            contact = book.get_by_id(int(choice))
+            contact = book.get_by_id(int(choice))[0]
 
             while True:
                 choice = edit_menu(contact)
 
                 if choice == "1": # first name only
-                    fname = input("Enter new first name: " )
+                    fname = input("Enter new first name: ")
                     contact.set_fname(fname)
                     book.edit(contact)
 

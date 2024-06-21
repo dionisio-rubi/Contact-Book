@@ -57,7 +57,7 @@ class ContactBook:
     def edit(self, contact: Contact):
         """ Edit contact information """
         try:
-            insert_script = 'UPDATE FROM contactBook SET first_name = (%s), last_name = (%s), phone = (%s), email = (%s) WHERE id = %s'
+            insert_script = 'UPDATE contactBook SET first_name = (%s), last_name = (%s), phone = (%s), email = (%s) WHERE id = %s'
             values = (
                 contact.get_fname(), contact.get_lname(), contact.get_phone(), contact.get_email(), contact.get_id())
             self.cur.execute(insert_script, values)
@@ -106,14 +106,14 @@ class ContactBook:
             all_contacts.append(Contact(c[0], c[1], c[2], c[3], c[4], c[5]))
         return all_contacts
 
-    def _run_sql_fetchall(self, script, **kwargs):
+    def _run_sql_fetchall(self, script, param):
         try:
-            self.cur.execute(script, (kwargs,))
+            self.cur.execute(script, (param,))
             self.conn.commit()
             contacts = self.cur.fetchall()
 
         except pg.Error as error:
-            print(f"Error executing script: {script}\n\twith params: {kwargs}")
+            print(f"Error executing script: {script}\n\twith params: {param}")
             return None
 
         all_contacts = []
